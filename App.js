@@ -33,6 +33,7 @@ import { RadioGroup } from 'react-native-radio-buttons-group';
 import CheckBox from '@react-native-community/checkbox';
 import RNFetchBlob from 'react-native-fetch-blob';
 
+
 const App: () => React$Node = () => {
 
   //States
@@ -59,6 +60,7 @@ const App: () => React$Node = () => {
   const [tripListener, setTripListener] = useState('');
   const [tripResponse, setTripResponse] = useState('');
   const [tripSummaryResponse, setTripSummaryResponse] = useState('')
+  const [getActiveTripsIsLocal, setGetActiveTripsIsLocal] = useState(false)
   
 
   // Permissions
@@ -125,7 +127,7 @@ const App: () => React$Node = () => {
       if (Platform.OS === 'android') {
         Roam.allowMockLocation(true);
       }
-      Roam.enableAccuracyEngine();
+      //Roam.enableAccuracyEngine(50);
       onCheckPermissions();
     } 
       
@@ -265,39 +267,212 @@ const App: () => React$Node = () => {
 
 
 
-  //Trip Summary
-  const onGetTripSummaryPress = () => {
-    const handleGetTripSummaryCallback = async success => {
-      setTripSummaryResponse(JSON.stringify(success))
-      setTripSummaryStatus('SUCCESS');
-      setDistanceCovered(success.distanceCovered);
-      setDuration(success.duration);
-      setElevationGain(success.elevationGain);
-      setRouteCount(success.route.length);
-    };
-    const handleGetTripSummaryError = error => {
-      setTripSummaryStatus('ERROR');
-      setTripSummaryResponse(JSON.stringify(error))
-    };
-    Roam.getTripSummary(
-      tripId,
-      handleGetTripSummaryCallback,
-      handleGetTripSummaryError,
-    );
-  };
+  
+
+  //-------- Trips V2 -----------
 
   const onCreateTripPress = () => {
-      Roam.createTrip(true, success => {
-        console.log(JSON.stringify(success))
-        AsyncStorage.setItem('tripId', success.id);
-        setTripId(success.id)
-        setTripResponse(JSON.stringify(success))
-      }, error => {
-        console.log(JSON.stringify(error))
+    var stop1 = new Roam.RoamTripStop(null, null, 'Saini Khera Village', 'Sec-30', null, 100, [77.058709, 28.467933]);
+    var stop2 = new Roam.RoamTripStop(null, null, 'sec-39', '39', null, 100, [77.043431, 28.439106]);
+    var stop3 = new Roam.RoamTripStop(null, null, 'Home', 'home', null, 100, [77.051735, 28.442125]);
+    var roamTrip = new Roam.RoamTrip(null, 'test trip 1', 'test1', [stop1, stop2, stop3], false, null, null);
+    Roam.createTrip(roamTrip, success=>{
+      console.log(JSON.stringify(success))
+      AsyncStorage.setItem('tripId', success.trip.id);
+      setTripId(success.trip.id)
+      setTripResponse(JSON.stringify(success))
+    }, error=>{
+          console.log(JSON.stringify(error))
         setTripResponse(JSON.stringify(error))
-      });
+    })
   };
 
+  const onStartQuickTripPress = () => {
+    var roamTrip = new Roam.RoamTrip(null, 'test trip 1', 'test1', null, true, null, null);
+    var customTrackingOption = new Roam.RoamCustomTrackingOptions(Roam.DesiredAccuracy.HIGH, 5, 0, 0, Roam.ActivityType.FITNESS, Roam.DesiredAccuracyIOS.BEST, true, false, true, 20)
+    Roam.startQuickTrip(roamTrip, Roam.TrackingMode.CUSTOM, customTrackingOption, success=>{
+      console.log(JSON.stringify(success))
+      AsyncStorage.setItem('tripId', success.trip.id);
+      setTripId(success.trip.id)
+      setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onUnsubscribeTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+
+    console.log(`tripID before unsubscribe: ${tripId}`)
+    Roam.unSubscribeTrip(tripId)
+    setTripSubscriptionStatus('Disabled');
+  }
+
+  const onUnsubscribeAll = () => {
+    Roam.unSubscribeTrip(null)
+    setTripSubscriptionStatus('Disabled');
+  }
+
+  const onStartTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.startTrip(tripId, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onUpdateTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    var roamTrip = new Roam.RoamTrip({'updated meta': 1, 'take two': 'done'}, 'updated trip', 'updated name', null, null, tripId, null)
+    Roam.updateTrip(roamTrip, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onPauseTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.pauseTrip(tripId, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onResumeTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.resumeTrip(tripId, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onEndTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.endTrip(tripId, true, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onSyncTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.syncTrip(tripId, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onGetTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.getTrip(tripId, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onGetActiveTrips = () => {
+    Roam.getActiveTrips(getActiveTripsIsLocal, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onDeleteTrip = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.deleteTrip(tripId, success=>{
+      console.log(JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onIsTripSynced = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    Roam.isTripSynced(tripId, success=>{
+        console.log(JSON.stringify(success))
+          setTripResponse(JSON.stringify(success))
+      }, error=>{
+        console.log(JSON.stringify(error))
+          setTripResponse(JSON.stringify(error))
+      })
+  }
+
+  const onGetTripSummaryPress = () => {
+    if (typeof tripId === 'undefined') {
+      Alert.alert('Invalid trip id', 'Please create a test trip before');
+      return;
+    }
+    console.log('getTripSummary called')
+    Roam.getTripSummary(tripId, success=>{
+      console.log('trip summary: ' + JSON.stringify(success))
+        setTripResponse(JSON.stringify(success))
+        setTripSummaryResponse(JSON.stringify(success))
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+
+
+  //----------- END ---------------
   
 
   
@@ -406,59 +581,7 @@ const App: () => React$Node = () => {
         Roam.stopTracking();
   }
 
-  const startTrip = () => {
-    //setTimeout(() => {
-      //startTracking()
-      Roam.startTrip(tripId, 'test-trip', success => {
-        console.log(JSON.stringify(success))
-        setTripResponse(JSON.stringify(success))
-      }, error => {
-        console.log(JSON.stringify(error))
-        setTripResponse(JSON.stringify(error))
-      })
-    //}, 90000)
-  }
-
-  const stopTrip = () => {
-    Roam.stopTrip(tripId, success => {
-      console.log(JSON.stringify(success))
-      setTripResponse(JSON.stringify(success))
-    }, error => {
-      console.log(JSON.stringify(error))
-      setTripResponse(JSON.stringify(error))
-    })
-  }
-
-  const syncTrip = () => {
-    Roam.syncTrip(tripId, success => {
-      console.log(JSON.stringify(success))
-      setTripResponse(JSON.stringify(success))
-    }, error => {
-      console.log(JSON.stringify(error))
-      setTripResponse(JSON.stringify(error))
-    })
-  }
-
-  const onToggleTrip = () => {
-    if (typeof tripId === 'undefined') {
-      Alert.alert('Invalid trip id', 'Please create a test trip before');
-      return;
-    }
-   // if (tripTrackingStatus === 'STARTED') {
-      // Alert.alert('Trip already started', 'Please create a test trip before');
-
-      // return;
-   // }
-    console.log('Toggle trip');
-    roam
-      .toggleTrip(tripId, (tripTrackingStatus === 'STARTED'))
-      .then(setTripTrackingStatus)
-      .catch(error => {
-        if (error === roam.ErrorCodes.InvalidUserId) {
-          Alert.alert('Invalid trip id', 'Please create a test trip before');
-        }
-      });
-  };
+  
 
   const enableEvents = () => {
     // Just to make each flag explicit
@@ -524,7 +647,7 @@ const App: () => React$Node = () => {
     }
 
     console.log(`tripID before subscribe: ${tripId}`)
-    Roam.subscribeTripStatus(tripId);
+    Roam.subscribeTrip(tripId)
     setTripSubscriptionStatus('Enabled');
   };
 
@@ -887,31 +1010,66 @@ const App: () => React$Node = () => {
               Trip Response : {tripResponse}
             </Text>
             <View style={styles.row}>
-              <Button onPress={onCreateTripPress}>Create test trip</Button>
+              <Button onPress={onCreateTripPress}>Create Online trip</Button>
               <TextField>
                 {typeof tripId === 'undefined' ? 'Empty' : tripId}
               </TextField>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onStartQuickTripPress}>Start Offline Quick Trip</Button>
             </View>
             <View style={styles.row}>
               <Button onPress={onSubscribeTrip}>Subscribe Trip</Button>
               <TextField>{tripSubscriptionStatus}</TextField>
             </View>
             <View style={styles.row}>
+              <Button onPress={onUnsubscribeTrip}>Unsubscribe Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onUnsubscribeAll}>Unsubscribe All</Button>
+            </View>
+            <View style={styles.row}>
               <Button onPress={onListenTripUpdates}>Listen trip</Button>
               <TextField>{listenUpdatesTripStatus}</TextField>
             </View>
             <View style={styles.row}>
-              <Button onPress={startTrip}>Start Trip</Button>
+              <Button onPress={onStartTrip}>Start Trip</Button>
             </View>
             <View style={styles.row}>
-              <Button onPress={stopTrip}>Stop Trip</Button>
+              <Button onPress={onUpdateTrip}>Update Trip</Button>
             </View>
             <View style={styles.row}>
-              <Button onPress={syncTrip}>Sync Trip</Button>
+              <Button onPress={onPauseTrip}>Pause Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onResumeTrip}>Resume Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onEndTrip}>End Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onSyncTrip}>Sync Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onGetTrip}>Get Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onGetActiveTrips}>Get Active Trips</Button>
+              <CheckBox
+                disabled={false}
+                value={getActiveTripsIsLocal}
+                onValueChange={(newValue) => setGetActiveTripsIsLocal(newValue)}
+              />
+              <Text style={styles.sectionDescription}>isLocal</Text>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onDeleteTrip}>Delete Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onIsTripSynced}>Is Trip Synced</Button>
             </View>
             <View style={styles.row}>
               <Button onPress={onGetTripSummaryPress}>Get trip summary</Button>
-              <TextField>{tripSummaryStatus}</TextField>
             </View>
             <View style={styles.row}>
               <Button onPress={exportToStorage}>Export Trip Summary</Button>
