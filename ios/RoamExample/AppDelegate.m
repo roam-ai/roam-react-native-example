@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <AWSCore/AWSCore.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -29,7 +30,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [Roam initialize:@"3b4d1b9acd75008ebb6fb81d97508432907334309c49cf12351476e36c0d9a30" :NULL :NULL];
+  [Roam initialize:@"c05c7d7997605489cfc778010e44e1898aa7565569a78356b1688bc6bb90ac30" :NULL :NULL: AWSRegionUnknown];
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
   

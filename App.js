@@ -847,6 +847,16 @@ const App: () => React$Node = () => {
               <TextField>{subscriptionStatus}</TextField>
             </View>
             <View style={styles.row}>
+              <Button onPress={() => {
+                if (typeof loadedUserId === 'undefined') {
+                  Alert.alert('Invalid user id', 'Please load a test user before');
+                  return;
+                }
+                Roam.unSubscribe(Roam.SubscribeListener.LOCATION, userId);
+                setSubscriptionStatus('Disabled')
+              }}>Unsubscribe Location</Button>
+            </View>
+            <View style={styles.row}>
               <Button onPress={onListenUpdates}>Listen updates</Button>
               <TextField>{listenUpdatesStatus}</TextField>
             </View>
@@ -855,6 +865,18 @@ const App: () => React$Node = () => {
               <Button onPress={() => stopTracking()}>Stop Tracking</Button>
            
           </View>
+          <View style={styles.row}>
+              <Button onPress={() => {
+                Roam.logout(success=>{
+                  console.log(JSON.stringify(success))
+                  setCurrentLocation(`Logout response: `+JSON.stringify(success))
+                  setEventStatus('Disabled')
+                  setSubscriptionStatus('Disabled')
+                }, error=>{
+                  setTripResponse(JSON.stringify(error))
+                })
+              }}>Logout</Button>
+            </View>
           <View style={styles.sectionContainer}>
             <Text style={styles.counter}>
               Location updates: {updateCoutner}

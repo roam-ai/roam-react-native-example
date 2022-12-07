@@ -324,10 +324,10 @@ PODS:
     - React-Core
   - RNDeviceInfo (8.4.8):
     - React-Core
-  - RNRoam (0.0.39):
+  - RNRoam (0.0.40):
     - React
-    - roam-ios (= 0.0.32)
-  - roam-ios (0.0.32)
+    - roam-ios (= 0.0.36)
+  - roam-ios (0.0.36)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -477,7 +477,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: 9d7da378a31457ab481f37710a9c176c1dd2594f
+  FBReactNativeSpec: 467aa7620f0e68360c80f180d1b276aed8bfc4c7
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: 755929a4f851b2fb2c347d533a23f191b008554c
@@ -515,8 +515,8 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCCheckbox: ed1b4ca295475b41e7251ebae046360a703b6eb5
   RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
-  RNRoam: 13912ea4822c54215f12db1663ef772c17007068
-  roam-ios: ad843d07aa1d29ade783a4dcd55279a9288e09b1
+  RNRoam: 7898392b2b00a2d6fbf858c5488019db9456ca7b
+  roam-ios: acc2da73d2a4b4d4f543d521bc7938358f5b5685
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
