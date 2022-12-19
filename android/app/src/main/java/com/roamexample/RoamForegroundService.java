@@ -28,9 +28,9 @@ public class RoamForegroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-             startForeground(NotificationHelper.NOTIFICATION_ID, NotificationHelper.showNotification(this));
-         }
+//         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//             startForeground(NotificationHelper.NOTIFICATION_ID, NotificationHelper.showNotification(this));
+//         }
         register();
     }
 

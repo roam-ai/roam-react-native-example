@@ -26,6 +26,6 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        startService(new Intent(this, RoamForegroundService.class));
+        //startService(new Intent(this, RoamForegroundService.class));
     }
 }

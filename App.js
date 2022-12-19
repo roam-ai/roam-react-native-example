@@ -61,6 +61,9 @@ const App: () => React$Node = () => {
   const [tripResponse, setTripResponse] = useState('');
   const [tripSummaryResponse, setTripSummaryResponse] = useState('')
   const [getActiveTripsIsLocal, setGetActiveTripsIsLocal] = useState(false)
+
+  //temp solution for updateTrip is_local
+  const [updateIsLocal, setUpdateIsLocal] = useState(true)
   
 
   // Permissions
@@ -271,30 +274,88 @@ const App: () => React$Node = () => {
 
   //-------- Trips V2 -----------
 
-  const onCreateTripPress = () => {
-    var stop1 = new Roam.RoamTripStop(null, null, 'Saini Khera Village', 'Sec-30', null, 100, [77.058709, 28.467933]);
-    var stop2 = new Roam.RoamTripStop(null, null, 'sec-39', '39', null, 100, [77.043431, 28.439106]);
-    var stop3 = new Roam.RoamTripStop(null, null, 'Home', 'home', null, 100, [77.051735, 28.442125]);
-    var roamTrip = new Roam.RoamTrip(null, 'test trip 1', 'test1', [stop1, stop2, stop3], false, null, null);
+  const onCreateOnlineTripPress = () => {
+    let is_local = false;
+    var stop1 = new Roam.RoamTripStop(null, null, 'Saini Khera Village', 'Sec-30', null, 100, [77.63871367868967,12.924248984581705]);
+    var stop2 = new Roam.RoamTripStop(null, null, 'sec-39', '39', null, 100, [77.64746840866755,12.970527542017907]);
+    var stop3 = new Roam.RoamTripStop(null, null, 'Home', 'home', null, 100, [77.64869710303215,12.987400006135104]);
+    var roamTrip = new Roam.RoamTrip(null, 'test trip 1', 'test1', [stop1, stop2, stop3], is_local, null, null);
     Roam.createTrip(roamTrip, success=>{
       console.log(JSON.stringify(success))
-      AsyncStorage.setItem('tripId', success.trip.id);
-      setTripId(success.trip.id)
+      AsyncStorage.setItem('tripId', success.trip.tripId);
+      setTripId(success.trip.tripId)
       setTripResponse(JSON.stringify(success))
+      setUpdateIsLocal(is_local)
     }, error=>{
           console.log(JSON.stringify(error))
         setTripResponse(JSON.stringify(error))
     })
   };
 
-  const onStartQuickTripPress = () => {
-    var roamTrip = new Roam.RoamTrip(null, 'test trip 1', 'test1', null, true, null, null);
+  const onCreateOfflineTripPress = () => {
+    let is_local = true;
+    var stop1 = new Roam.RoamTripStop(null, null, 'Saini Khera Village', 'Sec-30', null, 100, [77.63871367868967,12.924248984581705]);
+    var stop2 = new Roam.RoamTripStop(null, null, 'sec-39', '39', null, 100, [77.64746840866755,12.970527542017907]);
+    var stop3 = new Roam.RoamTripStop(null, null, 'Home', 'home', null, 100, [77.64869710303215,12.987400006135104]);
+    var roamTrip = new Roam.RoamTrip(null, 'test trip 1', 'test1', [stop1, stop2, stop3], is_local, null, null);
+    Roam.createTrip(roamTrip, success=>{
+      console.log(JSON.stringify(success))
+      AsyncStorage.setItem('tripId', success.trip.tripId);
+      setTripId(success.trip.tripId)
+      setTripResponse(JSON.stringify(success))
+      setUpdateIsLocal(is_local)
+    }, error=>{
+          console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  };
+
+  const onStartOnlineQuickTripPress = () => {
+    let is_local = false;
+    if(Platform.OS === 'android'){
+      Roam.setForegroundNotification(
+        true,
+        "Roam Example",
+        "Tap to open",
+        "mipmap/ic_launcher",
+        "com.roamexample.MainActivity",
+        "com.roamexample.RoamForegroundService"
+      )
+    }
+    var roamTrip = new Roam.RoamTrip(null, 'test trip 2', 'test2', null, is_local, null, null);
     var customTrackingOption = new Roam.RoamCustomTrackingOptions(Roam.DesiredAccuracy.HIGH, 5, 0, 0, Roam.ActivityType.FITNESS, Roam.DesiredAccuracyIOS.BEST, true, false, true, 20)
     Roam.startQuickTrip(roamTrip, Roam.TrackingMode.CUSTOM, customTrackingOption, success=>{
       console.log(JSON.stringify(success))
-      AsyncStorage.setItem('tripId', success.trip.id);
-      setTripId(success.trip.id)
+      AsyncStorage.setItem('tripId', success.trip.tripId);
+      setTripId(success.trip.tripId)
       setTripResponse(JSON.stringify(success))
+      setUpdateIsLocal(is_local)
+    }, error=>{
+      console.log(JSON.stringify(error))
+        setTripResponse(JSON.stringify(error))
+    })
+  }
+
+  const onStartOfflineQuickTripPress = () => {
+    let is_local = true;
+    if(Platform.OS === 'android'){
+      Roam.setForegroundNotification(
+        true,
+        "Roam Example",
+        "Tap to open",
+        "mipmap/ic_launcher",
+        "com.roamexample.MainActivity",
+        "com.roamexample.RoamForegroundService"
+      )
+    }
+    var roamTrip = new Roam.RoamTrip(null, 'test trip 2', 'test2', null, is_local, null, null);
+    var customTrackingOption = new Roam.RoamCustomTrackingOptions(Roam.DesiredAccuracy.HIGH, 5, 0, 0, Roam.ActivityType.FITNESS, Roam.DesiredAccuracyIOS.BEST, true, false, true, 20)
+    Roam.startQuickTrip(roamTrip, Roam.TrackingMode.CUSTOM, customTrackingOption, success=>{
+      console.log(JSON.stringify(success))
+      AsyncStorage.setItem('tripId', success.trip.tripId);
+      setTripId(success.trip.tripId)
+      setTripResponse(JSON.stringify(success))
+      setUpdateIsLocal(is_local)
     }, error=>{
       console.log(JSON.stringify(error))
         setTripResponse(JSON.stringify(error))
@@ -336,7 +397,7 @@ const App: () => React$Node = () => {
       Alert.alert('Invalid trip id', 'Please create a test trip before');
       return;
     }
-    var roamTrip = new Roam.RoamTrip({'updated meta': 1, 'take two': 'done'}, 'updated trip', 'updated name', null, null, tripId, null)
+    var roamTrip = new Roam.RoamTrip({'updated meta': 1, 'take two': 'done'}, 'updated trip', 'updated name', null, updateIsLocal, tripId, null)
     Roam.updateTrip(roamTrip, success=>{
       console.log(JSON.stringify(success))
         setTripResponse(JSON.stringify(success))
@@ -378,6 +439,16 @@ const App: () => React$Node = () => {
     if (typeof tripId === 'undefined') {
       Alert.alert('Invalid trip id', 'Please create a test trip before');
       return;
+    }
+    if(Platform.OS === 'android'){
+      Roam.setForegroundNotification(
+        false,
+        "Roam Example",
+        "Tap to open",
+        "mipmap/ic_launcher",
+        "com.roamexample.MainActivity",
+        "com.roamexample.RoamForegroundService"
+      )
     }
     Roam.endTrip(tripId, true, success=>{
       console.log(JSON.stringify(success))
@@ -440,19 +511,7 @@ const App: () => React$Node = () => {
     })
   }
 
-  const onIsTripSynced = () => {
-    if (typeof tripId === 'undefined') {
-      Alert.alert('Invalid trip id', 'Please create a test trip before');
-      return;
-    }
-    Roam.isTripSynced(tripId, success=>{
-        console.log(JSON.stringify(success))
-          setTripResponse(JSON.stringify(success))
-      }, error=>{
-        console.log(JSON.stringify(error))
-          setTripResponse(JSON.stringify(error))
-      })
-  }
+ 
 
   const onGetTripSummaryPress = () => {
     if (typeof tripId === 'undefined') {
@@ -657,9 +716,10 @@ const App: () => React$Node = () => {
       return;
     }
     Roam.startListener('location', locations => {
-      locations.map((location) => {
-        console.log(JSON.stringify(location))
-      })
+      // locations.map((location) => {
+      //   console.log(JSON.stringify(location))
+      // })
+      console.log(JSON.stringify(locations))
       //console.log('Location', location);
       setUpdateCounter(count => count + locations.length);
       setCurrentLocation(JSON.stringify(locations))
@@ -1009,14 +1069,20 @@ const App: () => React$Node = () => {
             <Text style={styles.counter}>
               Trip Response : {tripResponse}
             </Text>
-            <View style={styles.row}>
-              <Button onPress={onCreateTripPress}>Create Online trip</Button>
-              <TextField>
+            <TextField>
                 {typeof tripId === 'undefined' ? 'Empty' : tripId}
               </TextField>
+            <View style={styles.row}>
+              <Button onPress={onCreateOnlineTripPress}>Create Online trip</Button>
             </View>
             <View style={styles.row}>
-              <Button onPress={onStartQuickTripPress}>Start Offline Quick Trip</Button>
+              <Button onPress={onCreateOfflineTripPress}>Create Offline Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onStartOnlineQuickTripPress}>Start Online Quick Trip</Button>
+            </View>
+            <View style={styles.row}>
+              <Button onPress={onStartOfflineQuickTripPress}>Start Offline Quick Trip</Button>
             </View>
             <View style={styles.row}>
               <Button onPress={onSubscribeTrip}>Subscribe Trip</Button>
@@ -1064,9 +1130,6 @@ const App: () => React$Node = () => {
             </View>
             <View style={styles.row}>
               <Button onPress={onDeleteTrip}>Delete Trip</Button>
-            </View>
-            <View style={styles.row}>
-              <Button onPress={onIsTripSynced}>Is Trip Synced</Button>
             </View>
             <View style={styles.row}>
               <Button onPress={onGetTripSummaryPress}>Get trip summary</Button>
