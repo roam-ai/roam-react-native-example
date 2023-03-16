@@ -29,7 +29,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [Roam initialize:@"3b4d1b9acd75008ebb6fb81d97508432907334309c49cf12351476e36c0d9a30" :NULL :NULL];
+  [Roam initialize:@"e1af14ce0f8943458aa450dd2f2c2af61ee970bec1b48d97ef89fdf3ba081ffd" :NULL :NULL];
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
   

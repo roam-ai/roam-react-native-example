@@ -62,6 +62,8 @@ const App: () => React$Node = () => {
   const [tripSummaryResponse, setTripSummaryResponse] = useState('')
   const [getActiveTripsIsLocal, setGetActiveTripsIsLocal] = useState(false)
 
+  const [listenEvent, setListenEvent] = useState('')
+
   //temp solution for updateTrip is_local
   const [updateIsLocal, setUpdateIsLocal] = useState(true)
   
@@ -194,6 +196,13 @@ const App: () => React$Node = () => {
       });
     }
   }, [permissions]);
+
+  const listenToEvents = () => {
+    Roam.startListener('events', events => {
+      console.log(JSON.stringify(events))
+      setListenEvent(JSON.stringify(events))
+    })
+  }
 
   //Request Permission
   const onRequestPermission = type => {
@@ -1062,6 +1071,13 @@ const App: () => React$Node = () => {
           <Button onPress={() => updateCurrentLocation()}>Update currrent location</Button>
           <Text style={styles.counter}>
               Location : {currentLocation}
+            </Text>
+          </View>
+          <View style={styles.sectionContainer}>
+          <Text style={styles.title}>Events:</Text>
+          <Button onPress={() => listenToEvents()}>Listen Event</Button>
+          <Text style={styles.counter}>
+              Event : {listenEvent}
             </Text>
           </View>
           <View style={styles.sectionContainer}>
