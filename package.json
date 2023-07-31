@@ -18,7 +18,7 @@
     "react-native-fetch-blob": "^0.10.8",
     "react-native-radio-buttons-group": "^2.2.11",
     "react-native-simple-toast": "^2.0.0",
-    "roam-reactnative": "^0.1.4"
+    "roam-reactnative": "^0.1.7"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",

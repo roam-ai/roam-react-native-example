@@ -187,7 +187,7 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    implementation 'com.roam.sdk:roam-android:0.0.30'
+    implementation 'com.roam.sdk:roam-android:0.1.14'
 
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
