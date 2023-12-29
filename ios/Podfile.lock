@@ -1,4 +1,5 @@
 PODS:
+  - BEMCheckBox (1.4.1)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -274,6 +275,9 @@ PODS:
     - glog
   - react-native-fetch-blob (0.10.6):
     - React-Core
+  - react-native-simple-toast (1.1.4):
+    - React-Core
+    - Toast (~> 4.0.0)
   - React-perflogger (0.66.3)
   - React-RCTActionSheet (0.66.3):
     - React-Core/RCTActionSheetHeaders (= 0.66.3)
@@ -341,14 +345,16 @@ PODS:
     - React-perflogger (= 0.66.3)
   - RNCAsyncStorage (1.12.1):
     - React-Core
-  - RNCCheckbox (0.5.12):
+  - RNCCheckbox (0.5.16):
+    - BEMCheckBox (~> 1.4)
     - React-Core
-  - RNDeviceInfo (8.4.8):
+  - RNDeviceInfo (8.7.1):
     - React-Core
-  - RNRoam (0.1.4):
+  - RNRoam (0.1.10):
     - React
-    - roam-ios (= 0.1.8)
-  - roam-ios (0.1.8)
+    - roam-ios (= 0.1.19)
+  - roam-ios (0.1.19)
+  - Toast (4.0.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -395,6 +401,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-fetch-blob (from `../node_modules/react-native-fetch-blob`)
+  - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -415,6 +422,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - BEMCheckBox
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -429,6 +437,7 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - roam-ios
+    - Toast
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -468,6 +477,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-fetch-blob:
     :path: "../node_modules/react-native-fetch-blob"
+  react-native-simple-toast:
+    :path: "../node_modules/react-native-simple-toast"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -504,6 +515,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
@@ -535,6 +547,7 @@ SPEC CHECKSUMS:
   React-jsinspector: d9c8eb0b53f0da206fed56612b289fec84991157
   React-logger: e522e76fa3e9ec3e7d7115b49485cc065cf4ae06
   react-native-fetch-blob: 0cbdf9764c75d9438c162427395f4bc35a857d5a
+  react-native-simple-toast: 4f6a5b31f7a03bace3388fe9477b4db3de221bdd
   React-perflogger: 73732888d37d4f5065198727b167846743232882
   React-RCTActionSheet: 96c6d774fa89b1f7c59fc460adc3245ba2d7fd79
   React-RCTAnimation: 8940cfd3a8640bd6f6372150dbdb83a79bcbae6c
@@ -548,13 +561,14 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: bbbdb3d8fcf327c6e2249ee71b6ef1764b7dc266
   ReactCommon: 9bac022ab71596f2b0fde1268272543184c63971
   RNCAsyncStorage: cb9a623793918c6699586281f0b51cbc38f046f9
-  RNCCheckbox: 934e11d33abb6b0db105cfa5a22a42bd89dfb4b9
-  RNDeviceInfo: 417b2ef4456c13a9d50ad8c57895eea837b735a8
-  RNRoam: 361a779c15108c4b6732292187c92a77bc888cb4
-  roam-ios: 7113aaf3623d35b630333a73c36b7ccd9e060451
+  RNCCheckbox: 6d53cdd9e002f01b567f5c9d59662e3517651326
+  RNDeviceInfo: af47a7d1a09d64c8cbb8b0c883db9bca422a9813
+  RNRoam: 232eade48b8b152cbdc242835bbf520bff242731
+  roam-ios: e8cc71be97df8260d03167603e526f86f19c568d
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: 32a18c0e845e185f4a2a66ec76e1fd1f958f22fa
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: d59c9e04468c656239648acfbac3aa9702b1e036
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.14.3
