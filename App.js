@@ -4,7 +4,7 @@
  * @flow strict-local
  */
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DeviceInfo from 'react-native-device-info';
 import React, {
   useState,
@@ -31,10 +31,10 @@ import {Button, TextField, Loader} from './components';
 import {roam} from './services';
 import { RadioGroup } from 'react-native-radio-buttons-group';
 import CheckBox from '@react-native-community/checkbox';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'react-native-blob-util';
 
 
-const App: () => React$Node = () => {
+const App = () => {
 
   //States
   const appStateRef = useRef(AppState.currentState);
